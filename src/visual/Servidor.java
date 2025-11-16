@@ -77,7 +77,7 @@ public class Servidor extends javax.swing.JFrame {
         crearPartida1.setBounds(880, 540, 270, 80);
 
         ip.setBackground(new java.awt.Color(241, 233, 234));
-        ip.setFont(new java.awt.Font("Segoe UI Black", 1, 48)); // NOI18N
+        ip.setFont(new java.awt.Font("Segoe UI Black", 1, 36)); // NOI18N
         ip.setForeground(new java.awt.Color(1, 18, 106));
         jPanel1.add(ip);
         ip.setBounds(730, 120, 300, 60);
@@ -85,6 +85,8 @@ public class Servidor extends javax.swing.JFrame {
         jugadores.setEditable(false);
         jugadores.setBackground(new java.awt.Color(241, 233, 234));
         jugadores.setColumns(20);
+        jugadores.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
+        jugadores.setForeground(new java.awt.Color(1, 18, 106));
         jugadores.setRows(5);
         jScrollPane1.setViewportView(jugadores);
 

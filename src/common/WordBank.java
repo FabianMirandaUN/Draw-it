@@ -8,12 +8,16 @@ package common;
  *
  * @author FabiFree
  */
-
 import java.util.List;
 import java.util.Random;
 
 public class WordBank {
-    private static final List<String> WORDS = List.of("casa","sol","perro","flor","carro","gato","árbol","libro","río","montaña");
+
+    private static final List<String> WORDS = List.of(
+            "casa", "sol", "perro", "flor", "carro", "gato", "árbol", "libro", "río", "montaña",
+            "avión", "barco", "computadora", "teléfono", "pelota", "estrella", "luna",
+            "playa", "bosque", "ciudad"
+    );
 
     public static String randomWord() {
         return WORDS.get(new Random().nextInt(WORDS.size()));

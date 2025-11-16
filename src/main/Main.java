@@ -5,8 +5,10 @@
 package main;
 
 import Gráfico.AudioLoop;
-import com.formdev.flatlaf.FlatDarkLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import common.Config;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import javax.swing.UIManager;
 import visual.Inicio;
 
@@ -16,7 +18,12 @@ import visual.Inicio;
  */
 public class Main {
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws UnknownHostException {
+        
+
+        Config.SERVER_IP = InetAddress.getLocalHost().getHostAddress();
+        
+
         System.setProperty("flatlaf.useNativeLibrary", "false");
 // Iniciar música en bucle
         AudioLoop.iniciarMusica("/Gráfico/Música.wav");
