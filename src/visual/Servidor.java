@@ -7,21 +7,41 @@ package visual;
 import client.GameServer2;
 import common.Config;
 import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
+import server.ClientHandler;
 import server.GameServer;
 
 /**
  *
  * @author fvarelo
  */
-public class Partidas extends javax.swing.JFrame {
+public class Servidor extends javax.swing.JFrame {
 
     /**
      * Creates new form Partida
      */
-    public Partidas() {
+    static String name;
+    GameServer server;
+    GameServer2 client;
+
+    public Servidor(String apodo) {
         initComponents();
+        name = apodo;
+        ip.setText(Config.SERVER_IP);
+        // Arrancar servidor
+        new Thread(() -> {
+            try {
+                server = new GameServer();
+                server.start(Config.SERVER_PORT);
+            } catch (Exception ex) {
+                SwingUtilities.invokeLater(()
+                        -> JOptionPane.showMessageDialog(this, "Error al iniciar servidor"));
+                ex.printStackTrace();
+            }
+        }, "ServerMain").start();
     }
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -33,9 +53,11 @@ public class Partidas extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        unirse = new javax.swing.JButton();
         crearPartida1 = new javax.swing.JButton();
-        apodo = new javax.swing.JTextField();
+        ip = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jugadores = new javax.swing.JTextArea();
+        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -43,32 +65,40 @@ public class Partidas extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
         jPanel1.setLayout(null);
 
-        unirse.setText("Unirse a una partida");
-        unirse.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                unirseActionPerformed(evt);
-            }
-        });
-        jPanel1.add(unirse);
-        unirse.setBounds(660, 400, 420, 100);
-
-        crearPartida1.setText("Crear partida");
+        crearPartida1.setText("Empezar Juego");
         crearPartida1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 crearPartida1ActionPerformed(evt);
             }
         });
         jPanel1.add(crearPartida1);
-        crearPartida1.setBounds(210, 400, 350, 100);
+        crearPartida1.setBounds(890, 540, 260, 80);
 
-        apodo.setBackground(new java.awt.Color(215, 208, 231));
-        apodo.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
-        apodo.setForeground(new java.awt.Color(1, 18, 106));
-        apodo.setBorder(null);
-        jPanel1.add(apodo);
-        apodo.setBounds(590, 280, 350, 40);
+        ip.setBackground(new java.awt.Color(241, 233, 234));
+        ip.setFont(new java.awt.Font("Segoe UI Black", 1, 48)); // NOI18N
+        ip.setForeground(new java.awt.Color(1, 18, 106));
+        jPanel1.add(ip);
+        ip.setBounds(730, 120, 300, 60);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/PARTIDA.gif"))); // NOI18N
+        jugadores.setEditable(false);
+        jugadores.setBackground(new java.awt.Color(241, 233, 234));
+        jugadores.setColumns(20);
+        jugadores.setRows(5);
+        jScrollPane1.setViewportView(jugadores);
+
+        jPanel1.add(jScrollPane1);
+        jScrollPane1.setBounds(190, 200, 890, 320);
+
+        jButton1.setText("jButton1");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(jButton1);
+        jButton1.setBounds(1100, 170, 75, 22);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/SERVIDOR1.gif"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 0, 1280, 720);
 
@@ -91,25 +121,39 @@ public class Partidas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void crearPartida1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearPartida1ActionPerformed
-        String name = apodo.getText().trim();
-        if (name.isEmpty()) {
+
+
+        if (server.getClients().isEmpty()) {
+            System.out.println("No hay jugadores conectados.");
+            jugadores.setText("No hay jugadores conectados.");
             return;
         }
-        Servidor servidor = new Servidor(name);
-        servidor.setVisible(true);
-        this.setVisible(false);
+        // Esperar y conectar cliente
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException ignored) {
+        }
+        try {
+            client = new GameServer2(name, server);
+            client.connect(Config.SERVER_IP, Config.SERVER_PORT);
+            dispose();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo conectar al servidor");
+        }
+
+
     }//GEN-LAST:event_crearPartida1ActionPerformed
 
-    private void unirseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unirseActionPerformed
-        String name = apodo.getText().trim();
-        if (name.isEmpty()) {
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        jugadores.setText("");
+        if (server.getClients().isEmpty()) {
+            jugadores.setText("No hay jugadores conectados.");
             return;
         }
-        Cliente cliente = new Cliente(name);
-        cliente.setVisible(true);
-        this.setVisible(false);
-
-    }//GEN-LAST:event_unirseActionPerformed
+        for (ClientHandler client : server.getClients()) {
+            jugadores.append(client.getName() + "\n");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -128,30 +172,38 @@ public class Partidas extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Partidas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Partidas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Partidas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Partidas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Servidor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Partidas().setVisible(true);
+                new Servidor(name).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField apodo;
     private javax.swing.JButton crearPartida1;
+    private javax.swing.JLabel ip;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JButton unirse;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jugadores;
     // End of variables declaration//GEN-END:variables
 }

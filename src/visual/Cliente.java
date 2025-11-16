@@ -4,17 +4,32 @@
  */
 package visual;
 
+import client.GameClient;
+import client.GameServer2;
+import common.Config;
+import common.Protocol;
+import static java.lang.System.out;
+import java.util.Map;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import server.GameServer;
+
 /**
  *
  * @author fvarelo
  */
-public class Instrucciones extends javax.swing.JFrame {
+public class Cliente extends javax.swing.JFrame {
 
     /**
      * Creates new form Partida
      */
-    public Instrucciones() {
+    static String name;
+    GameServer server;
+
+    public Cliente(String apodo) {
         initComponents();
+        name = apodo;
+        ip.setText(Config.SERVER_IP);
     }
 
     /**
@@ -27,7 +42,9 @@ public class Instrucciones extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
+        crearPartida1 = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        ip = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -35,16 +52,32 @@ public class Instrucciones extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
         jPanel1.setLayout(null);
 
-        jButton1.setText("jButton1");
+        crearPartida1.setText("Empezar Juego");
+        crearPartida1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                crearPartida1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(crearPartida1);
+        crearPartida1.setBounds(440, 430, 390, 100);
+
+        jButton1.setText("Refrescar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
         jPanel1.add(jButton1);
-        jButton1.setBounds(1100, 530, 75, 80);
+        jButton1.setBounds(1075, 150, 100, 22);
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/INSTRUCCIONES.gif"))); // NOI18N
+        ip.setBackground(new java.awt.Color(215, 208, 231));
+        ip.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
+        ip.setForeground(new java.awt.Color(1, 18, 106));
+        ip.setBorder(null);
+        jPanel1.add(ip);
+        ip.setBounds(410, 300, 460, 50);
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/Cliente1.gif"))); // NOI18N
         jPanel1.add(jLabel1);
         jLabel1.setBounds(0, 0, 1280, 720);
 
@@ -66,10 +99,24 @@ public class Instrucciones extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void crearPartida1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearPartida1ActionPerformed
+
+        String ipa = ip.getText();
+        if (ipa == null || ipa.isBlank()) {
+            return;
+        }
+        try {
+            GameClient client = new GameClient(name);
+            client.connect(ipa, Config.SERVER_PORT);
+            dispose();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "No se pudo conectar al servidor");
+        }
+
+    }//GEN-LAST:event_crearPartida1ActionPerformed
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-    Partidas partida = new Partidas();
-    partida.setVisible(true);
-    this.setVisible(false);
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -89,26 +136,42 @@ public class Instrucciones extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Instrucciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Instrucciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Instrucciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Instrucciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Cliente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Instrucciones().setVisible(true);
+                new Cliente(name).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton crearPartida1;
+    private javax.swing.JTextField ip;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
