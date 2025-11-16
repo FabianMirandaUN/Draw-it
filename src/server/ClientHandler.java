@@ -12,6 +12,7 @@ import common.Protocol;
 import java.io.*;
 import java.net.Socket;
 import java.util.Map;
+import javax.swing.JTextArea;
 
 public class ClientHandler implements Runnable {
 
@@ -23,10 +24,12 @@ public class ClientHandler implements Runnable {
     private boolean isArtist = false;
     private int score = 0;
     private int attempts = 0;
+    private JTextArea jugadores;
 
-    public ClientHandler(Socket socket, GameServer server) {
+    public ClientHandler(Socket socket, GameServer server, JTextArea jugadores) {
         this.socket = socket;
         this.server = server;
+        this.jugadores = jugadores;
         try {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 this.out = new PrintWriter(socket.getOutputStream(), true);
@@ -87,6 +90,14 @@ switch (type) {
         playerName = (String) msg.get("player");
         System.out.println("[Server] JOIN recibido de: " + playerName);
         server.broadcastPlayersAndScores();
+        jugadores.setText("");
+                if (server.getClients().isEmpty()) {
+                    jugadores.setText("No hay jugadores conectados.");
+                    return;
+                }
+                for (ClientHandler client : server.getClients()) {
+                    jugadores.append(client.getName() + "\n");
+                }
     }
     case "START_REQUEST" -> {
         System.out.println("[Server] START_REQUEST recibido");

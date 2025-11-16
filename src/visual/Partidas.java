@@ -43,25 +43,32 @@ public class Partidas extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
         jPanel1.setLayout(null);
 
-        unirse.setText("Unirse a una partida");
+        unirse.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/Btn_BuscarPartida.png"))); // NOI18N
+        unirse.setBorder(null);
+        unirse.setBorderPainted(false);
+        unirse.setContentAreaFilled(false);
         unirse.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unirseActionPerformed(evt);
             }
         });
         jPanel1.add(unirse);
-        unirse.setBounds(660, 400, 420, 100);
+        unirse.setBounds(620, 390, 500, 120);
 
-        crearPartida1.setText("Crear partida");
+        crearPartida1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/Btn_CrearPartida.png"))); // NOI18N
+        crearPartida1.setToolTipText("");
+        crearPartida1.setBorder(null);
+        crearPartida1.setBorderPainted(false);
+        crearPartida1.setContentAreaFilled(false);
         crearPartida1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 crearPartida1ActionPerformed(evt);
             }
         });
         jPanel1.add(crearPartida1);
-        crearPartida1.setBounds(210, 400, 350, 100);
+        crearPartida1.setBounds(170, 400, 430, 106);
 
-        apodo.setBackground(new java.awt.Color(215, 208, 231));
+        apodo.setBackground(new java.awt.Color(207, 198, 229));
         apodo.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         apodo.setForeground(new java.awt.Color(1, 18, 106));
         apodo.setBorder(null);

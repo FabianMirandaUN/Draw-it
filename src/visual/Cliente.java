@@ -52,14 +52,17 @@ public class Cliente extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
         jPanel1.setLayout(null);
 
-        crearPartida1.setText("Empezar Juego");
+        crearPartida1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/Unirse.png"))); // NOI18N
+        crearPartida1.setBorder(null);
+        crearPartida1.setBorderPainted(false);
+        crearPartida1.setContentAreaFilled(false);
         crearPartida1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 crearPartida1ActionPerformed(evt);
             }
         });
         jPanel1.add(crearPartida1);
-        crearPartida1.setBounds(450, 430, 390, 100);
+        crearPartida1.setBounds(430, 424, 420, 106);
 
         jButton1.setText("Refrescar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {

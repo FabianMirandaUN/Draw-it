@@ -8,7 +8,6 @@ package client;
  *
  * @author FabiFree
  */
-
 import common.Protocol;
 
 import javax.swing.*;
@@ -16,6 +15,7 @@ import java.awt.*;
 import java.util.Map;
 
 public class GuessPanel extends JPanel {
+
     private final java.io.PrintWriter out;
     private final String playerName;
     private final JTextField guessField = new JTextField();
@@ -26,19 +26,22 @@ public class GuessPanel extends JPanel {
         setLayout(new BorderLayout());
         JButton sendBtn = new JButton("Adivinar");
         sendBtn.addActionListener(e -> {
-            String word = guessField.getText().trim();
-            if (!word.isEmpty()) {
-                out.println(Protocol.encode(Map.of("type","GUESS","player",playerName,"word",word)));
+            String guessText = guessField.getText().trim();
+            if (!guessText.isEmpty()) {
+                out.println(Protocol.encode(Map.of("type", "GUESS", "value", guessText)));
                 guessField.setText("");
             }
         });
+
         add(guessField, BorderLayout.CENTER);
         add(sendBtn, BorderLayout.EAST);
     }
 
-    @Override public void setEnabled(boolean enabled) {
+    @Override
+    public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        for (Component c : getComponents()) c.setEnabled(enabled);
+        for (Component c : getComponents()) {
+            c.setEnabled(enabled);
+        }
     }
 }
-

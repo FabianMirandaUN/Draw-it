@@ -17,6 +17,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
+import javax.swing.JTextArea;
+import visual.Servidor;
 
 public class GameServer {
 
@@ -24,6 +26,11 @@ public class GameServer {
     private final List<ClientHandler> clients = new CopyOnWriteArrayList<>();
     private final GameState state = new GameState();
     private volatile boolean running = false;
+    public JTextArea jugadores;
+
+    public GameServer(JTextArea jugadores) {
+        this.jugadores = jugadores;
+    }
 
     public void start(int port) throws IOException {
         serverSocket = new ServerSocket(port);
@@ -36,16 +43,16 @@ public class GameServer {
         while (running) {
             try {
                 Socket clientSocket = serverSocket.accept();
-                ClientHandler handler = new ClientHandler(clientSocket, this);
+                ClientHandler handler = new ClientHandler(clientSocket, this, jugadores);
                 clients.add(handler);
                 new Thread(handler).start();
-                // ❌ No llamar broadcastPlayersAndScores aquí
-                // ✅ Se llamará cuando el cliente mande JOIN
+                
             } catch (IOException e) {
                 if (running) {
                     e.printStackTrace();
                 }
             }
+                            
         }
     }
 
@@ -182,13 +189,16 @@ public class GameServer {
         if (guess.trim().equalsIgnoreCase(state.getSecretWord())) {
             state.setRoundActive(false);
             sender.incrementScore();
+
             broadcast(Map.of("type", "WINNER",
                     "player", sender.getName(),
                     "word", state.getSecretWord(),
                     "scores", clients.stream().map(ClientHandler::snapshot).toList()));
+
             broadcast(Map.of("type", "ROUND_END",
                     "result", "win",
                     "winner", sender.getName()));
+
             scheduleNextRound();
         } else {
             sender.incrementAttempts();

@@ -15,7 +15,7 @@ import common.Config;
 
 import javax.swing.*;
 import java.awt.*;
-
+/*
 public class InicioGUI extends JFrame {
 
     private final JTextField nameField = new JTextField("Jugador");
@@ -105,3 +105,4 @@ public class InicioGUI extends JFrame {
         new InicioGUI();
     }
 }
+*/

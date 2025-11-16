@@ -92,6 +92,7 @@ public class ServerGUI extends JFrame {
                 status.updateScores((java.util.List<Map<String, Object>>) msg.get("scores"));
                 JOptionPane.showMessageDialog(this, "Ganador: " + winner + " | Palabra: " + word);
             }
+
             case "ROUND_END" -> {
                 String result = (String) msg.get("result");
                 if ("timeout".equals(result)) {

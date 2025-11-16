@@ -35,14 +35,17 @@ public class Instrucciones extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
         jPanel1.setLayout(null);
 
-        jButton1.setText("jButton1");
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/Btn_Instrucciones.png"))); // NOI18N
+        jButton1.setBorder(null);
+        jButton1.setBorderPainted(false);
+        jButton1.setContentAreaFilled(false);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
         jPanel1.add(jButton1);
-        jButton1.setBounds(1100, 530, 75, 80);
+        jButton1.setBounds(1090, 530, 100, 80);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/INSTRUCCIONES.gif"))); // NOI18N
         jPanel1.add(jLabel1);

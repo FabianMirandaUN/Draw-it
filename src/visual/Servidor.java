@@ -29,10 +29,11 @@ public class Servidor extends javax.swing.JFrame {
         initComponents();
         name = apodo;
         ip.setText(Config.SERVER_IP);
+        jugadores.setText("No hay jugadores conectados");
         // Arrancar servidor
         new Thread(() -> {
             try {
-                server = new GameServer();
+                server = new GameServer(jugadores);
                 server.start(Config.SERVER_PORT);
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(()
@@ -41,7 +42,6 @@ public class Servidor extends javax.swing.JFrame {
             }
         }, "ServerMain").start();
     }
-        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -57,7 +57,6 @@ public class Servidor extends javax.swing.JFrame {
         ip = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jugadores = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -65,14 +64,17 @@ public class Servidor extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
         jPanel1.setLayout(null);
 
-        crearPartida1.setText("Empezar Juego");
+        crearPartida1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/Btn_IniciarJuego.png"))); // NOI18N
+        crearPartida1.setBorder(null);
+        crearPartida1.setBorderPainted(false);
+        crearPartida1.setContentAreaFilled(false);
         crearPartida1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 crearPartida1ActionPerformed(evt);
             }
         });
         jPanel1.add(crearPartida1);
-        crearPartida1.setBounds(890, 540, 260, 80);
+        crearPartida1.setBounds(880, 540, 270, 80);
 
         ip.setBackground(new java.awt.Color(241, 233, 234));
         ip.setFont(new java.awt.Font("Segoe UI Black", 1, 48)); // NOI18N
@@ -88,15 +90,6 @@ public class Servidor extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1);
         jScrollPane1.setBounds(190, 200, 890, 320);
-
-        jButton1.setText("jButton1");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel1.add(jButton1);
-        jButton1.setBounds(1100, 170, 75, 22);
 
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/SERVIDOR1.gif"))); // NOI18N
         jPanel1.add(jLabel1);
@@ -122,7 +115,6 @@ public class Servidor extends javax.swing.JFrame {
 
     private void crearPartida1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_crearPartida1ActionPerformed
 
-
         if (server.getClients().isEmpty()) {
             System.out.println("No hay jugadores conectados.");
             jugadores.setText("No hay jugadores conectados.");
@@ -143,17 +135,6 @@ public class Servidor extends javax.swing.JFrame {
 
 
     }//GEN-LAST:event_crearPartida1ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        jugadores.setText("");
-        if (server.getClients().isEmpty()) {
-            jugadores.setText("No hay jugadores conectados.");
-            return;
-        }
-        for (ClientHandler client : server.getClients()) {
-            jugadores.append(client.getName() + "\n");
-        }
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -200,7 +181,6 @@ public class Servidor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton crearPartida1;
     private javax.swing.JLabel ip;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
