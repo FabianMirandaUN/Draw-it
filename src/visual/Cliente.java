@@ -59,7 +59,7 @@ public class Cliente extends javax.swing.JFrame {
             }
         });
         jPanel1.add(crearPartida1);
-        crearPartida1.setBounds(440, 430, 390, 100);
+        crearPartida1.setBounds(450, 430, 390, 100);
 
         jButton1.setText("Refrescar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
