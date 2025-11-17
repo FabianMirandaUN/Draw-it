@@ -36,17 +36,16 @@ public class ServidorGame extends javax.swing.JFrame {
     private final StatusPanel status;
     private final PrintWriter out;
 
-    public ServidorGame(String playerName, java.io.PrintWriter out) {
+public ServidorGame(String playerName, java.io.PrintWriter out) {
         super("Draw It - " + playerName);
         this.playerName = playerName;
         this.out = out;
         initComponents();
         // Right after creating 'out' and before you ever press "Iniciar partida":
-       // this.out.println(Protocol.encode(Map.of("type", "JOIN", "player", playerName)));
-        //this.out.flush(); // extra safety if autoFlush wasn't used
-
+       this.out.println(Protocol.encode(Map.of("type", "JOIN", "player", playerName)));
+       this.out.flush(); // extra safety if autoFlush wasn't used
+ 
         // Ocultar todos excepto el fondo
-        this.out.println(Protocol.encode(Map.of("type", "START_REQUEST")));
 
         Tiempo.setVisible(true);
             jButton1.setVisible(true);
