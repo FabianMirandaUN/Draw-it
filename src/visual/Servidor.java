@@ -23,7 +23,7 @@ public class Servidor extends javax.swing.JFrame {
      */
     static String name;
     GameServer server;
-    GameServer2 client;
+    GameServer2 serverg;
 
     public Servidor(String apodo) {
         initComponents();
@@ -128,12 +128,13 @@ public class Servidor extends javax.swing.JFrame {
         } catch (InterruptedException ignored) {
         }
         try {
-            client = new GameServer2(name, server);
-            client.connect(Config.SERVER_IP, Config.SERVER_PORT);
+            serverg = new GameServer2(name, server);
+            serverg.connect(Config.SERVER_IP, Config.SERVER_PORT);
             dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "No se pudo conectar al servidor");
         }
+        
 
 
     }//GEN-LAST:event_crearPartida1ActionPerformed

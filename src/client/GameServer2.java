@@ -17,6 +17,7 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import server.GameServer;
+import visual.ServidorGame;
 
 public class GameServer2 {
 
@@ -24,7 +25,7 @@ public class GameServer2 {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-    private ServerGUI gui;
+    private ServidorGame gui;
     private GameServer server;
 
     public GameServer2(String playerName, GameServer server) {
@@ -41,7 +42,7 @@ public class GameServer2 {
         out.println(Protocol.encode(java.util.Map.of("type", "HELLO", "name", playerName)));
 //GUI
         SwingUtilities.invokeLater(() -> {
-            gui = new ServerGUI(playerName, out);
+            gui = new ServidorGame(playerName, out);
             gui.setSize(Config.WIDTH, Config.HEIGHT);
             gui.setVisible(true);
         });

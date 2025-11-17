@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package server;
 
-/**
- *
- * @author FabiFree
- */
 import common.Config;
 import common.WordBank;
 import java.io.IOException;
@@ -18,7 +10,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.JTextArea;
-import visual.Servidor;
 
 public class GameServer {
 
@@ -27,6 +18,9 @@ public class GameServer {
     private final GameState state = new GameState();
     private volatile boolean running = false;
     public JTextArea jugadores;
+
+    // ✅ referencia al hilo del timer
+    private Thread roundTimerThread;
 
     public GameServer(JTextArea jugadores) {
         this.jugadores = jugadores;
@@ -46,13 +40,11 @@ public class GameServer {
                 ClientHandler handler = new ClientHandler(clientSocket, this, jugadores);
                 clients.add(handler);
                 new Thread(handler).start();
-                
             } catch (IOException e) {
                 if (running) {
                     e.printStackTrace();
                 }
             }
-                            
         }
     }
 
@@ -60,12 +52,16 @@ public class GameServer {
         running = false;
         try {
             serverSocket.close();
-        } catch (IOException ignored) {
-        }
+        } catch (IOException ignored) {}
         for (ClientHandler ch : clients) {
             ch.close();
         }
         clients.clear();
+
+        // ✅ detener timer si existe
+        if (roundTimerThread != null && roundTimerThread.isAlive()) {
+            roundTimerThread.interrupt();
+        }
     }
 
     public List<ClientHandler> getClients() {
@@ -108,6 +104,11 @@ public class GameServer {
             return;
         }
 
+        // ✅ detener timer anterior si existe
+        if (roundTimerThread != null && roundTimerThread.isAlive()) {
+            roundTimerThread.interrupt();
+        }
+
         state.setRoundActive(true);
         state.incrementRound();
 
@@ -127,11 +128,14 @@ public class GameServer {
             ch.setArtist(ch == artist);
         }
 
-        new Thread(this::runTimer, "RoundTimer").start();
+        // ✅ lanzar nuevo timer y guardar referencia
+        roundTimerThread = new Thread(this::runTimer, "RoundTimer");
+        roundTimerThread.start();
+
         System.out.println("[Server] Iniciando ronda: " + state.getRound());
         System.out.println("[Server] Artista elegido: " + state.getArtist());
         System.out.println("[Server] Palabra: " + word);
-
+        
     }
 
     public void finalizarPartida() {
@@ -143,6 +147,11 @@ public class GameServer {
         state.setRoundActive(false);
         state.setSecretWord("");
         state.setArtist(null);
+
+        // ✅ detener timer
+        if (roundTimerThread != null && roundTimerThread.isAlive()) {
+            roundTimerThread.interrupt();
+        }
 
         broadcast(Map.of("type", "ROUND_END", "result", "ended"));
         broadcast(Map.of("type", "CLEAR"));
@@ -156,7 +165,9 @@ public class GameServer {
             broadcast(Map.of("type", "TIME", "remaining", remaining));
             try {
                 Thread.sleep(1000);
-            } catch (InterruptedException ignored) {
+            } catch (InterruptedException e) {
+                // ✅ salir si el hilo fue interrumpido
+                return;
             }
             remaining--;
         }
@@ -173,8 +184,7 @@ public class GameServer {
         new Thread(() -> {
             try {
                 Thread.sleep(3000);
-            } catch (InterruptedException ignored) {
-            }
+            } catch (InterruptedException ignored) {}
             if (clients.size() >= 2) {
                 iniciarPartidaManual();
             }
@@ -189,6 +199,11 @@ public class GameServer {
         if (guess.trim().equalsIgnoreCase(state.getSecretWord())) {
             state.setRoundActive(false);
             sender.incrementScore();
+
+            // ✅ detener timer
+            if (roundTimerThread != null && roundTimerThread.isAlive()) {
+                roundTimerThread.interrupt();
+            }
 
             broadcast(Map.of("type", "WINNER",
                     "player", sender.getName(),

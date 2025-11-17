@@ -73,7 +73,7 @@ public class Cliente extends javax.swing.JFrame {
         jPanel1.add(jButton1);
         jButton1.setBounds(1075, 150, 100, 22);
 
-        ip.setBackground(new java.awt.Color(215, 208, 231));
+        ip.setBackground(new java.awt.Color(207, 198, 229));
         ip.setFont(new java.awt.Font("Segoe UI Black", 0, 18)); // NOI18N
         ip.setForeground(new java.awt.Color(1, 18, 106));
         ip.setBorder(null);

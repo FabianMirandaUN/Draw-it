@@ -29,10 +29,10 @@ public class ClientGUI extends JFrame {
 
         setLayout(new BorderLayout());
 
-        tools = new ToolsPanel(out);
+        tools = new ToolsPanel(out, null, null);
         drawing = new DrawingPanel(out, tools);
         guess = new GuessPanel(out, playerName);
-        status = new StatusPanel();
+        status = new StatusPanel(tools);
 
         add(tools, BorderLayout.WEST);
         add(drawing, BorderLayout.CENTER);
@@ -50,6 +50,8 @@ public class ClientGUI extends JFrame {
         tools.setEnabled(false);
         drawing.setArtist(false);
         guess.setEnabled(false);
+        
+        setContentPane(new LoadingPanel());
 
     }
 
@@ -65,8 +67,19 @@ public class ClientGUI extends JFrame {
                 String artist = (String) msg.get("artist");
                 boolean iAmArtist = playerName.equals(artist);
 
+                // Cambiar pantalla de carga a la interfaz de juego
+                getContentPane().removeAll();
+                setLayout(new BorderLayout());
+                add(tools, BorderLayout.EAST);
+                add(drawing, BorderLayout.CENTER);
+                add(guess, BorderLayout.SOUTH);
+                add(status, BorderLayout.NORTH);
+                revalidate();
+                repaint();
+
+                // Configurar roles
                 tools.setEnabled(iAmArtist);
-                drawing.setArtist(iAmArtist);   // MUST actually toggle input
+                drawing.setArtist(iAmArtist);
                 guess.setEnabled(!iAmArtist);
 
                 drawing.clearCanvasLocal();
@@ -74,6 +87,7 @@ public class ClientGUI extends JFrame {
                 status.setRound(((Double) msg.get("round")).intValue());
                 status.setDuration(((Double) msg.get("duration")).intValue());
             }
+
             case "WORD" -> {
                 drawing.setSecretWord((String) msg.get("value")); // only the artist should display it
             }
@@ -107,6 +121,16 @@ public class ClientGUI extends JFrame {
                 status.updatePlayers((java.util.List<String>) msg.get("list"));
             default -> {
                 /* opcional: log */ }
+        }
+    }
+
+    public class LoadingPanel extends JPanel {
+
+        public LoadingPanel() {
+            setLayout(new BorderLayout());
+            JLabel label = new JLabel("Esperando que el servidor inicie la partida...", SwingConstants.CENTER);
+            label.setFont(new Font("Arial", Font.BOLD, 20));
+            add(label, BorderLayout.CENTER);
         }
     }
 

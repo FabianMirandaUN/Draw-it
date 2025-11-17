@@ -17,10 +17,10 @@ import java.util.Map;
 public class ServerGUI extends JFrame {
 
     private final String playerName;
-    private final ToolsPanel tools;
-    private final DrawingPanel drawing;
+    private final ToolsPanel2 tools;
+    private final DrawingPanel2 drawing;
     private final GuessPanel guess;
-    private final StatusPanel status;
+    private final StatusPanel2 status;
 
     public ServerGUI(String playerName, PrintWriter out) {
         super("Draw It - " + playerName);
@@ -28,10 +28,10 @@ public class ServerGUI extends JFrame {
 
         setLayout(new BorderLayout());
 
-        tools = new ToolsPanel(out);
-        drawing = new DrawingPanel(out, tools);
+        tools = new ToolsPanel2(out);
+        drawing = new DrawingPanel2(out,tools);
         guess = new GuessPanel(out, playerName);
-        status = new StatusPanel();
+        status = new StatusPanel2(); 
 
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.add(status, BorderLayout.CENTER);
@@ -79,7 +79,6 @@ public class ServerGUI extends JFrame {
             case "WORD" -> {
                 drawing.setSecretWord((String) msg.get("value")); // only the artist should display it
             }
-
             case "DRAW" ->
                 drawing.addRemoteStroke(msg);
             case "CLEAR" ->

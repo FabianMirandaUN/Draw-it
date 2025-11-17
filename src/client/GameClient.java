@@ -8,7 +8,6 @@ package client;
  *
  * @author FabiFree
  */
-
 import common.Config;
 import common.Protocol;
 
@@ -17,13 +16,17 @@ import java.io.*;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import visual.ClienteGame;
 
 public class GameClient {
+
     private final String playerName;
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-    private ClientGUI gui;
+    //private ClientGUI gui;
+    private ClienteGame gui;
+    
 
     public GameClient(String playerName) {
         this.playerName = playerName;
@@ -35,26 +38,28 @@ public class GameClient {
         out = new PrintWriter(socket.getOutputStream(), true);
 
         // Enviar HELLO
-        out.println(Protocol.encode(java.util.Map.of("type","HELLO","name",playerName)));
+        out.println(Protocol.encode(java.util.Map.of("type", "HELLO", "name", playerName)));
 //GUI
         SwingUtilities.invokeLater(() -> {
-    gui = new ClientGUI(playerName, out);
-    gui.setSize(Config.WIDTH, Config.HEIGHT);
-    gui.setVisible(true);
-});
+            gui = new ClienteGame(playerName, out);
+            gui.setSize(Config.WIDTH, Config.HEIGHT);
+            gui.setVisible(true);
+        });
 
-Thread.sleep(300); // espera breve para que la GUI se cree
+        Thread.sleep(300); // espera breve para que la GUI se cree
 //Listener
-new Thread(() -> {
-    String line;
+        new Thread(() -> {
+            String line;
             try {
                 while ((line = in.readLine()) != null) {
-                    if (gui != null) gui.handleMessage(line);
-                }       } catch (IOException ex) {
+                    if (gui != null) {
+                        gui.handleMessage(line);
+                    }
+                }
+            } catch (IOException ex) {
                 Logger.getLogger(GameClient.class.getName()).log(Level.SEVERE, null, ex);
             }
-}).start();
+        }).start();
 
     }
 }
-

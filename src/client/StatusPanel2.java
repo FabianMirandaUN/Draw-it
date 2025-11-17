@@ -8,23 +8,23 @@ package client;
  *
  * @author FabiFree
  */
+
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
-public class StatusPanel extends JPanel {
-
+public class StatusPanel2 extends JPanel {
     private final JLabel artistLabel;
     private final JLabel roundLabel;
     private final JLabel timeLabel;
     private final JLabel messageLabel;
     private final JTextArea playersArea;
     private final JTextArea scoresArea;
-    private final ToolsPanel h;
 
-    public StatusPanel(ToolsPanel h) {
-        this.h = h;
+    public StatusPanel2() {
         setLayout(new BorderLayout());
 
         // Panel superior con información básica
@@ -69,11 +69,11 @@ public class StatusPanel extends JPanel {
     }
 
     public void setDuration(int duration) {
-        h.setTime(duration);
+        timeLabel.setText("Tiempo: " + duration + "s");
     }
 
     public void setRemaining(int remaining) {
-        h.setTime(remaining);
+        timeLabel.setText("Tiempo restante: " + remaining + "s");
     }
 
     public void updatePlayers(List<String> players) {
@@ -90,3 +90,4 @@ public class StatusPanel extends JPanel {
         }
     }
 }
+

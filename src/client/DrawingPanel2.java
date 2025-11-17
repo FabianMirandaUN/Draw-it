@@ -19,12 +19,11 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import visual.PanelRound;
 
-public class DrawingPanel extends PanelRound {
+public class DrawingPanel2 extends JPanel {
 
     private final PrintWriter out;
-    private final ToolsPanel tools;
+    private final ToolsPanel2 tools;
     private final List<Stroke> strokes = new ArrayList<>();
     private boolean isArtist = false;
     private String secretWord = "";
@@ -32,11 +31,11 @@ public class DrawingPanel extends PanelRound {
     // ✅ Declarar el JLabel para mostrar la palabra
     private final JLabel secretWordLabel = new JLabel();
 
-    public DrawingPanel(PrintWriter out, ToolsPanel tools) {
+    public DrawingPanel2(PrintWriter out, ToolsPanel2 tools) {
         this.out = out;
         this.tools = tools;
 
-        setBackground(new Color(253, 248, 253));
+        setBackground(Color.WHITE);
         setLayout(new BorderLayout());
 
         // ✅ Configurar el JLabel
@@ -77,7 +76,7 @@ public class DrawingPanel extends PanelRound {
             }
         };
 
-        canvasPanel.setBackground(new Color(253, 248, 253));
+        canvasPanel.setBackground(Color.WHITE);
 
         canvasPanel.addMouseListener(new MouseAdapter() {
             @Override
