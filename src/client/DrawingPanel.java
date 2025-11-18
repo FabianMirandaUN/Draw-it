@@ -29,25 +29,25 @@ public class DrawingPanel extends PanelRound {
     private boolean isArtist = false;
     private String secretWord = "";
 
-    // ✅ Declarar el JLabel para mostrar la palabra
+    // Declarar el JLabel para mostrar la palabra
     private final JLabel secretWordLabel = new JLabel();
 
     public DrawingPanel(PrintWriter out, ToolsPanel tools) {
         this.out = out;
         this.tools = tools;
-
+        radius = 100;
         setBackground(new Color(253, 248, 253));
         setLayout(new BorderLayout());
 
-        // ✅ Configurar el JLabel
+        // Configurar el JLabel
         secretWordLabel.setText("Palabra: ");
         secretWordLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
         secretWordLabel.setHorizontalAlignment(SwingConstants.CENTER);
         secretWordLabel.setVisible(false); // solo el artista lo ve
 
-        add(secretWordLabel, BorderLayout.NORTH); // ✅ añadirlo al panel
+        add(secretWordLabel, BorderLayout.NORTH); // añadirlo al panel
 
-        JPanel canvasPanel = new JPanel() {
+        PanelRound canvasPanel = new PanelRound() {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);

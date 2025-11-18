@@ -6,8 +6,9 @@ import java.io.PrintWriter;
 import java.util.Map;
 import common.Protocol;
 import slider_material.JsliderCustom;
+import visual.PanelRound;
 
-public class ToolsPanel extends JPanel {
+public class ToolsPanel extends PanelRound {
 
     private final PrintWriter out;
     private Color currentColor = Color.BLACK;
@@ -23,9 +24,9 @@ public class ToolsPanel extends JPanel {
 
     public ToolsPanel(PrintWriter out, JsliderCustom grosor, JLabel tiempo) {
         this.out = out;
-        setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5)); // horizontal
+        setLayout(new FlowLayout(FlowLayout.LEFT, 15, 5)); // horizontal
         setPreferredSize(new Dimension(1100, 70));
-        setBackground(Color.WHITE); // fondo púrpura
+        setBackground(Color.WHITE);
         this.tiempo = tiempo;
 
         // Colores predefinidos

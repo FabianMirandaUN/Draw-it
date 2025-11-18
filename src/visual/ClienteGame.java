@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.SwingConstants;
 
 /**
@@ -111,9 +112,6 @@ public class ClienteGame extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        Tiempo = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        grosor = new slider_material.JsliderCustom();
         herramientas = new visual.PanelRound();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -130,7 +128,10 @@ public class ClienteGame extends javax.swing.JFrame {
         jButton13 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        Tiempo = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         lienzo = new visual.PanelRound();
+        grosor = new slider_material.JsliderCustom();
         lienzo1 = new visual.PanelRound();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -140,26 +141,6 @@ public class ClienteGame extends javax.swing.JFrame {
 
         jPanel1.setPreferredSize(new java.awt.Dimension(1280, 720));
         jPanel1.setLayout(null);
-
-        Tiempo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
-        Tiempo.setForeground(new java.awt.Color(251, 178, 99));
-        Tiempo.setText("jLabel2");
-        jPanel1.add(Tiempo);
-        Tiempo.setBounds(1140, 40, 200, 30);
-
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("GROSOR");
-        jPanel1.add(jLabel2);
-        jLabel2.setBounds(510, 80, 90, 30);
-
-        grosor.setBackground(new java.awt.Color(103, 88, 230));
-        grosor.setForeground(new java.awt.Color(103, 88, 230));
-        grosor.setMaximum(30);
-        grosor.setToolTipText("Grosor");
-        grosor.setValue(15);
-        jPanel1.add(grosor);
-        grosor.setBounds(40, 80, 460, 30);
 
         herramientas.setLayout(null);
 
@@ -231,21 +212,42 @@ public class ClienteGame extends javax.swing.JFrame {
         jPanel1.add(herramientas);
         herramientas.setBounds(30, 20, 1070, 50);
 
+        Tiempo.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        Tiempo.setForeground(new java.awt.Color(251, 178, 99));
+        Tiempo.setText("jLabel2");
+        jPanel1.add(Tiempo);
+        Tiempo.setBounds(1140, 40, 200, 30);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("GROSOR");
+        jPanel1.add(jLabel2);
+        jLabel2.setBounds(510, 80, 90, 30);
+
         lienzo.setBackground(new java.awt.Color(253, 248, 253));
+        lienzo.setRadius(100);
 
         javax.swing.GroupLayout lienzoLayout = new javax.swing.GroupLayout(lienzo);
         lienzo.setLayout(lienzoLayout);
         lienzoLayout.setHorizontalGroup(
             lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1050, Short.MAX_VALUE)
+            .addGap(0, 1060, Short.MAX_VALUE)
         );
         lienzoLayout.setVerticalGroup(
             lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
+            .addGap(0, 570, Short.MAX_VALUE)
         );
 
         jPanel1.add(lienzo);
-        lienzo.setBounds(50, 140, 1050, 560);
+        lienzo.setBounds(50, 130, 1060, 570);
+
+        grosor.setBackground(new java.awt.Color(103, 88, 230));
+        grosor.setForeground(new java.awt.Color(103, 88, 230));
+        grosor.setMaximum(30);
+        grosor.setToolTipText("Grosor");
+        grosor.setValue(15);
+        jPanel1.add(grosor);
+        grosor.setBounds(40, 80, 460, 30);
 
         lienzo1.setBackground(new java.awt.Color(253, 248, 253));
 
@@ -304,6 +306,7 @@ public class ClienteGame extends javax.swing.JFrame {
         if (type == null) {
             return;
         }
+        
 
         switch (type) {
             case "START" -> {
@@ -410,66 +413,20 @@ public class ClienteGame extends javax.swing.JFrame {
                 status.updateScores((java.util.List<Map<String, Object>>) msg.get("players"));
             case "PLAYERS" ->
                 status.updatePlayers((java.util.List<String>) msg.get("list"));
+                
             default -> {
                 /* opcional: log */            }
         }
     }
 
-    public class ClientGUI extends JFrame {
-
-        private final String playerName;
-        private final ToolsPanel tools;
-        private final DrawingPanel drawing;
-        private final GuessPanel guess;
-        private final StatusPanel status;
-
-        public ClientGUI(String playerName, java.io.PrintWriter out) {
-
-            super("Draw It - " + playerName);
-            this.playerName = playerName;
-
-            setLayout(new BorderLayout());
-
-            tools = new ToolsPanel(out, grosor, Tiempo);
-            drawing = new DrawingPanel(out, tools);
-            guess = new GuessPanel(out, playerName);
-            status = new StatusPanel(tools);
-
-            add(tools, BorderLayout.WEST);
-            add(drawing, BorderLayout.CENTER);
-            add(guess, BorderLayout.SOUTH);
-            add(status, BorderLayout.NORTH);
-
-            setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-            // Right after creating 'out' and before you ever press "Iniciar partida":
-            out.println(Protocol.encode(Map.of("type", "JOIN", "player", playerName)));
-            out.flush(); // extra safety if autoFlush wasn't used
-
-            // Estado inicial
-            status.setMessage("Esperando inicio de partida...");
-            tools.setEnabled(false);
-            drawing.setArtist(false);
-            guess.setEnabled(false);
-
-            setContentPane(new LoadingPanel());
-
-        }
-
-        public class LoadingPanel extends JPanel {
-
-            public LoadingPanel() {
-                setLayout(new BorderLayout());
-                JLabel label = new JLabel("Esperando que el servidor inicie la partida...", SwingConstants.CENTER);
-                label.setFont(new Font("Arial", Font.BOLD, 20));
-                add(label, BorderLayout.CENTER);
-            }
-        }
-    }
     /**
      * @param args the command line arguments
      */
 
+    /**
+     * @param args the command line arguments
+     */
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Tiempo;

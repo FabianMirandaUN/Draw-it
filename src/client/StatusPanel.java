@@ -54,6 +54,7 @@ public class StatusPanel extends JPanel {
         add(messageLabel, BorderLayout.CENTER);
         add(listsPanel, BorderLayout.SOUTH);
     }
+    
 
     // ✅ Nuevo método para mostrar mensajes libres
     public void setMessage(String msg) {
@@ -77,6 +78,12 @@ public class StatusPanel extends JPanel {
     }
 
     public void updatePlayers(List<String> players) {
+        playersArea.setText("Jugadores:\n");
+        for (String p : players) {
+            playersArea.append(p + "\n");
+        }
+    }
+    public void updatePlayers(List<String> players, JTextArea playersArea) {
         playersArea.setText("Jugadores:\n");
         for (String p : players) {
             playersArea.append(p + "\n");

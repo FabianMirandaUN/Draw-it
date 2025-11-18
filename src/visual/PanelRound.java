@@ -6,7 +6,7 @@ package visual;
 
 /**
  *
- * @author FabiFree
+ * @author jeff
  */
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -17,7 +17,7 @@ import javax.swing.JPanel;
 
 public class PanelRound extends JPanel {
 
-    private int radius = 50;
+    public int radius = 50;
 
     public PanelRound() {
         setOpaque(false);

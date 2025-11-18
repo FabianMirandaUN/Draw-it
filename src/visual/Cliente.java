@@ -24,7 +24,6 @@ public class Cliente extends javax.swing.JFrame {
      * Creates new form Partida
      */
     static String name;
-    GameServer server;
 
     public Cliente(String apodo) {
         initComponents();

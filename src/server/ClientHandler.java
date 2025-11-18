@@ -39,7 +39,7 @@ this.out = new PrintWriter(socket.getOutputStream(), true);
     }
 
     public String getName() {
-        return playerName; // ✅ devuelve null si aún no hay nombre
+        return playerName; // devuelve null si aún no hay nombre
     }
 
     public void setArtist(boolean artist) {
@@ -97,6 +97,7 @@ switch (type) {
                 }
                 for (ClientHandler client : server.getClients()) {
                     jugadores.append(client.getName() + "\n");
+                    
                 }
     }
     case "START_REQUEST" -> {

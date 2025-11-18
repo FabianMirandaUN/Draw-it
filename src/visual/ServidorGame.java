@@ -36,7 +36,7 @@ public class ServidorGame extends javax.swing.JFrame {
     private final StatusPanel status;
     private final PrintWriter out;
 
-public ServidorGame(String playerName, java.io.PrintWriter out) {
+    public ServidorGame(String playerName, java.io.PrintWriter out) {
         super("Draw It - " + playerName);
         this.playerName = playerName;
         this.out = out;
@@ -117,6 +117,7 @@ public ServidorGame(String playerName, java.io.PrintWriter out) {
         jButton13 = new javax.swing.JButton();
         Tiempo = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        lienzo = new visual.PanelRound();
         grosor = new slider_material.JsliderCustom();
         herramientas = new visual.PanelRound();
         jButton1 = new javax.swing.JButton();
@@ -133,7 +134,6 @@ public ServidorGame(String playerName, java.io.PrintWriter out) {
         jButton12 = new javax.swing.JButton();
         jTextField1 = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        lienzo = new visual.PanelRound();
         lienzo1 = new visual.PanelRound();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
@@ -164,6 +164,23 @@ public ServidorGame(String playerName, java.io.PrintWriter out) {
         jLabel2.setText("GROSOR");
         jPanel1.add(jLabel2);
         jLabel2.setBounds(510, 80, 90, 30);
+
+        lienzo.setBackground(new java.awt.Color(253, 248, 253));
+        lienzo.setRadius(100);
+
+        javax.swing.GroupLayout lienzoLayout = new javax.swing.GroupLayout(lienzo);
+        lienzo.setLayout(lienzoLayout);
+        lienzoLayout.setHorizontalGroup(
+            lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1060, Short.MAX_VALUE)
+        );
+        lienzoLayout.setVerticalGroup(
+            lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 570, Short.MAX_VALUE)
+        );
+
+        jPanel1.add(lienzo);
+        lienzo.setBounds(50, 130, 1060, 570);
 
         grosor.setBackground(new java.awt.Color(103, 88, 230));
         grosor.setForeground(new java.awt.Color(103, 88, 230));
@@ -233,22 +250,6 @@ public ServidorGame(String playerName, java.io.PrintWriter out) {
 
         jPanel1.add(herramientas);
         herramientas.setBounds(30, 20, 1070, 50);
-
-        lienzo.setBackground(new java.awt.Color(253, 248, 253));
-
-        javax.swing.GroupLayout lienzoLayout = new javax.swing.GroupLayout(lienzo);
-        lienzo.setLayout(lienzoLayout);
-        lienzoLayout.setHorizontalGroup(
-            lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1050, Short.MAX_VALUE)
-        );
-        lienzoLayout.setVerticalGroup(
-            lienzoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 560, Short.MAX_VALUE)
-        );
-
-        jPanel1.add(lienzo);
-        lienzo.setBounds(50, 140, 1050, 560);
 
         lienzo1.setBackground(new java.awt.Color(253, 248, 253));
 
