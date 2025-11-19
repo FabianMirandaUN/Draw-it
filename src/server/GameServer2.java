@@ -39,10 +39,12 @@ public class GameServer2 {
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
 
-        // Enviar HELLO
+        // Envia al servidor el mensaje inicial con el nombre del jugador para registrarlo.
         out.println(Protocol.encode(java.util.Map.of("type", "HELLO", "name", playerName)));
 //GUI
         SwingUtilities.invokeLater(() -> {
+            // Se crea la interfaz gráfica del servidor en el hilo de Swing para evitar errores de concurrencia.
+
             gui = new ServidorGame(playerName, out);
             gui.setSize(Config.WIDTH, Config.HEIGHT);
             gui.setVisible(true);
@@ -51,6 +53,8 @@ public class GameServer2 {
         Thread.sleep(300); // espera breve para que la GUI se cree
 //Listener
         new Thread(() -> {
+            // Hilo que permanece escuchando mensajes del servidor y los envía a la GUI para ser procesados.
+
             String line;
             try {
                 while ((line = in.readLine()) != null) {

@@ -17,11 +17,12 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import visual.ClienteGame;
-
+// Clase que maneja la conexión del cliente con el servidor mediante un socket.
 public class GameClient {
 
     private final String playerName;
     private Socket socket;
+    // 'in' recibe mensajes desde el servidor y 'out' envía comandos del cliente.
     private BufferedReader in;
     private PrintWriter out;
     private ClienteGame gui;
@@ -49,6 +50,8 @@ public class GameClient {
         new Thread(() -> {
             String line;
             try {
+                // Ciclo principal que escucha mensajes del servidor mientras el cliente está conectado.
+
                 while ((line = in.readLine()) != null) {
                     if (gui != null) {
                         gui.handleMessage(line);

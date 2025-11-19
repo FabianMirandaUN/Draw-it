@@ -5,8 +5,8 @@
 package server;
 
 /**
- *
- * @author FabiFree
+ * Clase que representa el estado actual del juego en el servidor.
+ * Contiene la palabra secreta, el artista asignado y el control de rondas.
  */
 
 public class GameState {

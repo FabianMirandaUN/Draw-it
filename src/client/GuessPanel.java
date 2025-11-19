@@ -16,9 +16,9 @@ import java.util.Map;
 
 public class GuessPanel extends JPanel {
 
-    private final java.io.PrintWriter out;
+    private final java.io.PrintWriter out; // 'out' es el canal de salida que envía mensajes al servidor usando el socket.
     private final String playerName;
-    private final JTextField guessField = new JTextField();
+    private final JTextField guessField = new JTextField(); // Campo de texto donde el jugador escribe su adivinanza.
 
     public GuessPanel(java.io.PrintWriter out, String playerName) {
         this.out = out;
@@ -28,7 +28,8 @@ public class GuessPanel extends JPanel {
         sendBtn.addActionListener(e -> {
             String guessText = guessField.getText().trim();
             if (!guessText.isEmpty()) {
-                out.println(Protocol.encode(Map.of("type", "GUESS", "value", guessText)));
+                out.println(Protocol.encode(Map.of("type", "GUESS", "value", guessText))); // Se arma el mensaje con el protocolo y se envía al servidor.
+
                 guessField.setText("");
             }
         });
@@ -41,6 +42,7 @@ public class GuessPanel extends JPanel {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         for (Component c : getComponents()) {
+            // Deshabilita todos los componentes del panel (ej. cuando no es tu turno).
             c.setEnabled(enabled);
         }
     }

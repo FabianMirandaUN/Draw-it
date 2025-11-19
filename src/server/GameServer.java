@@ -27,6 +27,7 @@ public class GameServer {
     }
 
     public void start(int port) throws IOException {
+        // Inicia el servidor, abre el puerto y lanza un hilo dedicado a aceptar nuevas conexiones.
         serverSocket = new ServerSocket(port);
         running = true;
         System.out.println("Servidor iniciado en puerto " + port);
@@ -37,6 +38,7 @@ public class GameServer {
         while (running) {
             try {
                 Socket clientSocket = serverSocket.accept();
+                // Cada vez que un cliente se conecta, se crea un ClientHandler y se ejecuta en un hilo independiente.
                 ClientHandler handler = new ClientHandler(clientSocket, this, jugadores);
                 clients.add(handler);
                 new Thread(handler).start();
@@ -52,7 +54,8 @@ public class GameServer {
         running = false;
         try {
             serverSocket.close();
-        } catch (IOException ignored) {}
+        } catch (IOException ignored) {
+        }
         for (ClientHandler ch : clients) {
             ch.close();
         }
@@ -111,12 +114,14 @@ public class GameServer {
 
         state.setRoundActive(true);
         state.incrementRound();
+// Selecciona aleatoriamente al jugador que será el artista y genera la palabra secreta de la ronda.
 
         int idx = new Random().nextInt(jugadoresValidos.size());
         ClientHandler artist = jugadoresValidos.get(idx);
         state.setArtist(artist.getName());
         String word = WordBank.randomWord();
         state.setSecretWord(word);
+// Hilo del servidor encargado de enviar cada segundo el tiempo restante a todos los clientes.
 
         broadcast(Map.of("type", "START",
                 "artist", state.getArtist(),
@@ -135,7 +140,7 @@ public class GameServer {
         System.out.println("[Server] Iniciando ronda: " + state.getRound());
         System.out.println("[Server] Artista elegido: " + state.getArtist());
         System.out.println("[Server] Palabra: " + word);
-        
+
     }
 
     public void finalizarPartida() {
@@ -183,8 +188,10 @@ public class GameServer {
     private void scheduleNextRound() {
         new Thread(() -> {
             try {
+                // Espera 3 segundos antes de iniciar automáticamente la siguiente ronda, siempre que haya suficientes jugadores.
                 Thread.sleep(3000);
-            } catch (InterruptedException ignored) {}
+            } catch (InterruptedException ignored) {
+            }
             if (clients.size() >= 2) {
                 iniciarPartidaManual();
             }
@@ -198,6 +205,7 @@ public class GameServer {
 
         if (guess.trim().equalsIgnoreCase(state.getSecretWord())) {
             state.setRoundActive(false);
+            // Si el jugador adivina correctamente, se detiene la ronda, se asigna el punto y se notifica a todos los clientes.
             sender.incrementScore();
 
             // detener timer

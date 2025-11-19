@@ -7,7 +7,7 @@ import java.util.Map;
 import visual.PanelRound;
 
 public class StatusPanel extends PanelRound {
-
+// Panel que muestra información del juego: artista, ronda, tiempo, jugadores y puntajes.
     private final JTextArea statusArea;
     private final ToolsPanel h;
     private String artist = "-";
@@ -43,6 +43,7 @@ public class StatusPanel extends PanelRound {
         sb.append("Tiempo: ").append(remainingTime).append("s\n\n");
 
         sb.append("Jugadores y Puntajes:\n");
+        // Actualiza visualmente la lista de puntajes recibida desde el servidor.
         if (scores != null) {
             for (Map<String, Object> s : scores) {
                 sb.append(String.format("%-10s : %s\n", s.get("player"), s.get("score")));

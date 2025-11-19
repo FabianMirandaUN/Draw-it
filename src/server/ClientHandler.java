@@ -13,7 +13,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Map;
 import javax.swing.JTextArea;
-
+// Hilo encargado de manejar a un jugador individual: recibe mensajes y los envía al servidor.
 public class ClientHandler implements Runnable {
 
     private final Socket socket;
@@ -32,7 +32,7 @@ public class ClientHandler implements Runnable {
         this.jugadores = jugadores;
         try {
             this.in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-this.out = new PrintWriter(socket.getOutputStream(), true);
+            this.out = new PrintWriter(socket.getOutputStream(), true);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -80,6 +80,7 @@ this.out = new PrintWriter(socket.getOutputStream(), true);
         try {
             String line;
             while ((line = in.readLine()) != null) {
+                // Convierte el mensaje JSON enviado por el cliente en un Map para identificar su tipo.
                 Map<String, Object> msg = Protocol.decode(line);
                 String type = (String) msg.get("type");
                 if (type == null) {

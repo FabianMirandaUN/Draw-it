@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 public class WordBank {
-
+// Las palabras se eligen al azar de la lista
     private static final List<String> WORDS = List.of(
             "casa", "sol", "perro", "flor", "carro", "gato", "árbol", "libro", "río", "montaña",
             "avión", "barco", "computadora", "teléfono", "pelota", "estrella", "luna",

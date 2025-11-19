@@ -9,6 +9,11 @@ package common;
  * @author FabiFree
  */
 
+/**
+ * Esta clase contiene todas las constantes que representan los tipos de mensajes
+ * que pueden intercambiar el cliente y el servidor durante la partida.
+ */
+
 public final class MessageTypes {
     public static final String HELLO = "HELLO";
     public static final String START = "START";
