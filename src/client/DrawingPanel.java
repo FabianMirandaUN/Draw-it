@@ -40,7 +40,7 @@ public class DrawingPanel extends PanelRound {
         setLayout(new BorderLayout());
 
         // Configurar el JLabel
-        //secretWordLabel.setText("Palabra: ");
+        secretWordLabel.setText("Palabra: ");
         secretWordLabel.setFont(new Font("SansSerif", Font.BOLD, 16));
         secretWordLabel.setHorizontalAlignment(SwingConstants.CENTER);
         secretWordLabel.setVisible(false); // solo el artista lo ve
@@ -160,7 +160,7 @@ public class DrawingPanel extends PanelRound {
         System.out.println("[Client] setSecretWord=" + word);
         this.secretWord = word;
         SwingUtilities.invokeLater(() -> {
-            //secretWordLabel.setText("Palabra: " + word);
+            secretWordLabel.setText("Palabra: " + word);
             secretWordLabel.setVisible(isArtist);
         });
     }
