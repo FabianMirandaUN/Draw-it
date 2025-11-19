@@ -58,7 +58,14 @@ public class ToolsPanel extends PanelRound {
         }
 
         // Botón JColorChooser
-        JButton paletteBtn = new JButton("🎨");
+        JButton paletteBtn = new JButton();
+        paletteBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/color.png"))); // NOI18N
+
+        paletteBtn.setBorder(null);
+
+        paletteBtn.setBorderPainted(false);
+
+        paletteBtn.setContentAreaFilled(false);
         paletteBtn.setFont(new Font("Arial", Font.BOLD, 16));
         paletteBtn.setPreferredSize(new Dimension(50, 40));
         paletteBtn.setBackground(Color.LIGHT_GRAY);
@@ -72,7 +79,14 @@ public class ToolsPanel extends PanelRound {
         add(paletteBtn);
 
         // Borrador
-        JToggleButton eraserBtn = new JToggleButton("🧽");
+        JToggleButton eraserBtn = new JToggleButton();
+        eraserBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/borrador.png"))); // NOI18N
+
+        eraserBtn.setBorder(null);
+
+        eraserBtn.setBorderPainted(false);
+
+        paletteBtn.setContentAreaFilled(false);
         eraserBtn.setFont(new Font("Arial", Font.BOLD, 16));
         eraserBtn.setBackground(Color.LIGHT_GRAY);
         eraserBtn.setPreferredSize(new Dimension(50, 40));
@@ -80,7 +94,14 @@ public class ToolsPanel extends PanelRound {
         add(eraserBtn);
 
         // Limpiar
-        JButton clearBtn = new JButton("✋");
+        JButton clearBtn = new JButton();
+        clearBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Gráfico/limpiar.png"))); // NOI18N
+
+        clearBtn.setBorder(null);
+
+        clearBtn.setBorderPainted(false);
+
+        clearBtn.setContentAreaFilled(false);
         clearBtn.setFont(new Font("Arial", Font.BOLD, 16));
         clearBtn.setBackground(Color.LIGHT_GRAY);
         clearBtn.setPreferredSize(new Dimension(50, 40));
