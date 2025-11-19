@@ -19,7 +19,7 @@ public class GameServer {
     private volatile boolean running = false;
     public JTextArea jugadores;
 
-    // ✅ referencia al hilo del timer
+    //  referencia al hilo del timer
     private Thread roundTimerThread;
 
     public GameServer(JTextArea jugadores) {
