@@ -5,7 +5,7 @@
 package visual;
 
 import client.GameClient;
-import client.GameServer2;
+import server.GameServer2;
 import common.Config;
 import common.Protocol;
 import static java.lang.System.out;

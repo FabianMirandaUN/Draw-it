@@ -1,99 +1,89 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package client;
 
-/**
- *
- * @author FabiFree
- */
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
+import visual.PanelRound;
 
-public class StatusPanel extends JPanel {
+public class StatusPanel extends PanelRound {
 
-    private final JLabel artistLabel;
-    private final JLabel roundLabel;
-    private final JLabel timeLabel;
-    private final JLabel messageLabel;
-    private final JTextArea playersArea;
-    private final JTextArea scoresArea;
+    private final JTextArea statusArea;
     private final ToolsPanel h;
+    private String artist = "-";
+    private int round = 0;
+    private int remainingTime = 0;
+    private List<String> players;
+    private List<Map<String, Object>> scores;
 
     public StatusPanel(ToolsPanel h) {
         this.h = h;
-        setLayout(new BorderLayout());
+        setLayout(new BorderLayout(5, 5));
+        setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        // Panel superior con información básica
-        JPanel infoPanel = new JPanel(new GridLayout(1, 3));
-        artistLabel = new JLabel("Artista: -");
-        roundLabel = new JLabel("Ronda: -");
-        timeLabel = new JLabel("Tiempo: -");
-        infoPanel.add(artistLabel);
-        infoPanel.add(roundLabel);
-        infoPanel.add(timeLabel);
+        //  Fondo personalizado
+        setBackground(new Color(253, 248, 253));
 
-        // Mensaje dinámico
-        messageLabel = new JLabel("Esperando inicio...");
-        messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        statusArea = new JTextArea(10, 20);
+        statusArea.setEditable(false);
+        statusArea.setFont(new Font("Monospaced", Font.PLAIN, 12));
+        statusArea.setBackground(new Color(253, 248, 253)); //  Fondo igual al panel
 
-        // Áreas de jugadores y puntajes
-        playersArea = new JTextArea(5, 15);
-        playersArea.setEditable(false);
-        scoresArea = new JTextArea(5, 15);
-        scoresArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(statusArea);
+        scrollPane.setBorder(BorderFactory.createTitledBorder("Estado del Juego"));
 
-        JPanel listsPanel = new JPanel(new GridLayout(1, 2));
-        listsPanel.add(new JScrollPane(playersArea));
-        listsPanel.add(new JScrollPane(scoresArea));
-
-        add(infoPanel, BorderLayout.NORTH);
-        add(messageLabel, BorderLayout.CENTER);
-        add(listsPanel, BorderLayout.SOUTH);
+        add(scrollPane, BorderLayout.CENTER);
+        updateDisplay();
     }
-    
 
-    // ✅ Nuevo método para mostrar mensajes libres
-    public void setMessage(String msg) {
-        messageLabel.setText(msg);
+    private void updateDisplay() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Artista: ").append(artist).append("\n");
+        sb.append("Ronda: ").append(round).append("\n");
+        sb.append("Tiempo: ").append(remainingTime).append("s\n\n");
+
+        sb.append("Jugadores y Puntajes:\n");
+        if (scores != null) {
+            for (Map<String, Object> s : scores) {
+                sb.append(String.format("%-10s : %s\n", s.get("player"), s.get("score")));
+            }
+        } else if (players != null) {
+            for (String p : players) {
+                sb.append(p).append("\n");
+            }
+        }
+        statusArea.setText(sb.toString());
     }
 
     public void setArtist(String artist) {
-        artistLabel.setText("Artista: " + artist);
+        this.artist = artist;
+        updateDisplay();
     }
 
     public void setRound(int round) {
-        roundLabel.setText("Ronda: " + round);
+        this.round = round;
+        updateDisplay();
     }
 
     public void setDuration(int duration) {
         h.setTime(duration);
+        this.remainingTime = duration;
+        updateDisplay();
     }
 
     public void setRemaining(int remaining) {
         h.setTime(remaining);
+        this.remainingTime = remaining;
+        updateDisplay();
     }
 
     public void updatePlayers(List<String> players) {
-        playersArea.setText("Jugadores:\n");
-        for (String p : players) {
-            playersArea.append(p + "\n");
-        }
-    }
-    public void updatePlayers(List<String> players, JTextArea playersArea) {
-        playersArea.setText("Jugadores:\n");
-        for (String p : players) {
-            playersArea.append(p + "\n");
-        }
+        this.players = players;
+        updateDisplay();
     }
 
     public void updateScores(List<Map<String, Object>> scores) {
-        scoresArea.setText("Puntajes:\n");
-        for (Map<String, Object> s : scores) {
-            scoresArea.append(s.get("player") + ": " + s.get("score") + "\n");
-        }
+        this.scores = scores;
+        updateDisplay();
     }
 }

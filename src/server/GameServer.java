@@ -58,7 +58,7 @@ public class GameServer {
         }
         clients.clear();
 
-        // ✅ detener timer si existe
+        // detener timer si existe
         if (roundTimerThread != null && roundTimerThread.isAlive()) {
             roundTimerThread.interrupt();
         }
@@ -128,7 +128,7 @@ public class GameServer {
             ch.setArtist(ch == artist);
         }
 
-        // ✅ lanzar nuevo timer y guardar referencia
+        // lanzar nuevo timer y guardar referencia
         roundTimerThread = new Thread(this::runTimer, "RoundTimer");
         roundTimerThread.start();
 
@@ -148,7 +148,7 @@ public class GameServer {
         state.setSecretWord("");
         state.setArtist(null);
 
-        // ✅ detener timer
+        // detener timer
         if (roundTimerThread != null && roundTimerThread.isAlive()) {
             roundTimerThread.interrupt();
         }
@@ -166,7 +166,7 @@ public class GameServer {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                // ✅ salir si el hilo fue interrumpido
+                // salir si el hilo fue interrumpido
                 return;
             }
             remaining--;
@@ -200,7 +200,7 @@ public class GameServer {
             state.setRoundActive(false);
             sender.incrementScore();
 
-            // ✅ detener timer
+            // detener timer
             if (roundTimerThread != null && roundTimerThread.isAlive()) {
                 roundTimerThread.interrupt();
             }

@@ -4,7 +4,7 @@
  */
 package visual;
 
-import client.GameServer2;
+import server.GameServer2;
 import common.Config;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;

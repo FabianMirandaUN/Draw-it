@@ -24,9 +24,7 @@ public class GameClient {
     private Socket socket;
     private BufferedReader in;
     private PrintWriter out;
-    //private ClientGUI gui;
     private ClienteGame gui;
-    
 
     public GameClient(String playerName) {
         this.playerName = playerName;

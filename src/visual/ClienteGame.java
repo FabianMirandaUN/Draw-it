@@ -70,11 +70,7 @@ public class ClienteGame extends javax.swing.JFrame {
         setLayout(new BorderLayout());
 
         tools = new ToolsPanel(out, grosor, Tiempo);
-        lienzo1.removeAll(); // panel creado en el diseñador
-        lienzo1.setLayout(new BorderLayout());
-        lienzo1.add(tools, BorderLayout.CENTER);
-        lienzo1.revalidate();
-        lienzo1.repaint();
+
         drawing = new DrawingPanel(out, tools);
         lienzo.removeAll(); // panel creado en el diseñador
         lienzo.setLayout(new BorderLayout());
@@ -84,6 +80,11 @@ public class ClienteGame extends javax.swing.JFrame {
 
         guess = new GuessPanel(out, playerName);
         status = new StatusPanel(tools);
+        lienzo1.removeAll(); // panel creado en el diseñador
+        lienzo1.setLayout(new BorderLayout());
+        lienzo1.add(status, BorderLayout.CENTER);
+        lienzo1.revalidate();
+        lienzo1.repaint();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -92,7 +93,6 @@ public class ClienteGame extends javax.swing.JFrame {
         out.flush(); // extra safety if autoFlush wasn't used
 
         // Estado inicial
-        status.setMessage("Esperando inicio de partida...");
         tools.setEnabled(false);
         drawing.setArtist(false);
         guess.setEnabled(false);
@@ -306,7 +306,6 @@ public class ClienteGame extends javax.swing.JFrame {
         if (type == null) {
             return;
         }
-        
 
         switch (type) {
             case "START" -> {
@@ -404,16 +403,14 @@ public class ClienteGame extends javax.swing.JFrame {
                     String word = (String) msg.get("word");
                     JOptionPane.showMessageDialog(this, "Tiempo agotado. La palabra era: " + word);
                 }
-                status.setMessage("Partida finalizada. Esperando nuevo inicio...");
                 tools.setEnabled(false);
                 drawing.setArtist(false);
                 guess.setEnabled(false);
             }
             case "SCORES" ->
                 status.updateScores((java.util.List<Map<String, Object>>) msg.get("players"));
-            case "PLAYERS" ->
-                status.updatePlayers((java.util.List<String>) msg.get("list"));
-                
+
+
             default -> {
                 /* opcional: log */            }
         }
@@ -422,11 +419,9 @@ public class ClienteGame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-
     /**
      * @param args the command line arguments
      */
-    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel Tiempo;

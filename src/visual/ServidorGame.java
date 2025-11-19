@@ -42,34 +42,33 @@ public class ServidorGame extends javax.swing.JFrame {
         this.out = out;
         initComponents();
         // Right after creating 'out' and before you ever press "Iniciar partida":
-       this.out.println(Protocol.encode(Map.of("type", "JOIN", "player", playerName)));
-       this.out.flush(); // extra safety if autoFlush wasn't used
- 
-        // Ocultar todos excepto el fondo
+        this.out.println(Protocol.encode(Map.of("type", "JOIN", "player", playerName)));
+        this.out.flush(); // extra safety if autoFlush wasn't used
 
+        // Ocultar todos excepto el fondo
         Tiempo.setVisible(true);
-            jButton1.setVisible(true);
-            jButton2.setVisible(true);
-            jButton3.setVisible(true);
-            jButton4.setVisible(true);
-            jButton5.setVisible(true);
-            jButton6.setVisible(true);
-            jButton7.setVisible(true);
-            jButton8.setVisible(true);
-            jButton9.setVisible(true);
-            jButton10.setVisible(true);
-            jButton11.setVisible(true);
-            jButton12.setVisible(true);
-            jButton13.setVisible(true);
-            jLabel1.setVisible(true);
-            jLabel2.setVisible(true);
-            jScrollPane1.setVisible(true);
-            jTextArea1.setVisible(true);
-            jTextField1.setVisible(true);
-            grosor.setVisible(true);
-            lienzo.setVisible(true);
-            lienzo1.setVisible(true);
-            herramientas.setVisible(true);
+        jButton1.setVisible(true);
+        jButton2.setVisible(true);
+        jButton3.setVisible(true);
+        jButton4.setVisible(true);
+        jButton5.setVisible(true);
+        jButton6.setVisible(true);
+        jButton7.setVisible(true);
+        jButton8.setVisible(true);
+        jButton9.setVisible(true);
+        jButton10.setVisible(true);
+        jButton11.setVisible(true);
+        jButton12.setVisible(true);
+        jButton13.setVisible(true);
+        jLabel1.setVisible(true);
+        jLabel2.setVisible(true);
+        jScrollPane1.setVisible(true);
+        jTextArea1.setVisible(true);
+        jTextField1.setVisible(true);
+        grosor.setVisible(true);
+        lienzo.setVisible(true);
+        lienzo1.setVisible(true);
+        herramientas.setVisible(true);
 
 // Mantener visible solo el fondo
         fondo.setVisible(true);
@@ -77,11 +76,6 @@ public class ServidorGame extends javax.swing.JFrame {
         setLayout(new BorderLayout());
 
         tools = new ToolsPanel(out, grosor, Tiempo);
-        lienzo1.removeAll(); // panel creado en el diseñador
-        lienzo1.setLayout(new BorderLayout());
-        lienzo1.add(tools, BorderLayout.CENTER);
-        lienzo1.revalidate();
-        lienzo1.repaint();
         drawing = new DrawingPanel(out, tools);
         lienzo.removeAll(); // panel creado en el diseñador
         lienzo.setLayout(new BorderLayout());
@@ -91,12 +85,15 @@ public class ServidorGame extends javax.swing.JFrame {
 
         guess = new GuessPanel(out, playerName);
         status = new StatusPanel(tools);
+        lienzo1.removeAll(); // panel creado en el diseñador
+        lienzo1.setLayout(new BorderLayout());
+        lienzo1.add(status, BorderLayout.CENTER);
+        lienzo1.revalidate();
+        lienzo1.repaint();
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        
         // Estado inicial
-        status.setMessage("Esperando inicio de partida...");
         tools.setEnabled(false);
         drawing.setArtist(false);
         guess.setEnabled(false);
@@ -411,7 +408,6 @@ public class ServidorGame extends javax.swing.JFrame {
                     String word = (String) msg.get("word");
                     JOptionPane.showMessageDialog(this, "Tiempo agotado. La palabra era: " + word);
                 }
-                status.setMessage("Partida finalizada. Esperando nuevo inicio...");
                 tools.setEnabled(false);
                 drawing.setArtist(false);
                 guess.setEnabled(false);
@@ -419,9 +415,6 @@ public class ServidorGame extends javax.swing.JFrame {
 
             case "SCORES" ->
                 status.updateScores((java.util.List<Map<String, Object>>) msg.get("players"));
-
-            case "PLAYERS" ->
-                status.updatePlayers((java.util.List<String>) msg.get("list"));
 
             default -> {
                 // opcional: log de mensajes desconocidos

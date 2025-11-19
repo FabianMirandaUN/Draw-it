@@ -85,44 +85,45 @@ this.out = new PrintWriter(socket.getOutputStream(), true);
                 if (type == null) {
                     continue;
                 }
-switch (type) {
-    case "JOIN" -> {
-        playerName = (String) msg.get("player");
-        System.out.println("[Server] JOIN recibido de: " + playerName);
-        server.broadcastPlayersAndScores();
-        jugadores.setText("");
-                if (server.getClients().isEmpty()) {
-                    jugadores.setText("No hay jugadores conectados.");
-                    return;
+                switch (type) {
+                    case "JOIN" -> {
+                        playerName = (String) msg.get("player");
+                        System.out.println("[Server] JOIN recibido de: " + playerName);
+                        server.broadcastPlayersAndScores();
+                        jugadores.setText("");
+                        if (server.getClients().isEmpty()) {
+                            jugadores.setText("No hay jugadores conectados.");
+                            return;
+                        }
+                        for (ClientHandler client : server.getClients()) {
+                            jugadores.append(client.getName() + "\n");
+
+                        }
+                    }
+                    case "START_REQUEST" -> {
+                        System.out.println("[Server] START_REQUEST recibido");
+                        server.iniciarPartidaManual();
+                    }
+                    case "END_REQUEST" -> {
+                        System.out.println("[Server] END_REQUEST recibido");
+                        server.finalizarPartida();
+                    }
+                    case "DRAW" -> {
+                        System.out.println("[Server] DRAW de " + playerName);
+                        server.broadcast(msg);
+                    }
+                    case "CLEAR" -> {
+                        System.out.println("[Server] CLEAR de " + playerName);
+                        server.broadcast(msg);
+                    }
+                    case "GUESS" -> {
+                        System.out.println("[Server] GUESS de " + playerName + ": " + msg.get("value"));
+                        server.verifyGuess((String) msg.get("value"), this);
+                    }
+                    default ->
+                        System.out.println("[Server] Mensaje desconocido: " + msg);
                 }
-                for (ClientHandler client : server.getClients()) {
-                    jugadores.append(client.getName() + "\n");
-                    
-                }
-    }
-    case "START_REQUEST" -> {
-        System.out.println("[Server] START_REQUEST recibido");
-        server.iniciarPartidaManual();
-    }
-    case "END_REQUEST" -> {
-        System.out.println("[Server] END_REQUEST recibido");
-        server.finalizarPartida();
-    }
-    case "DRAW" -> {
-        System.out.println("[Server] DRAW de " + playerName);
-        server.broadcast(msg);
-    }
-    case "CLEAR" -> {
-        System.out.println("[Server] CLEAR de " + playerName);
-        server.broadcast(msg);
-    }
-    case "GUESS" -> {
-        System.out.println("[Server] GUESS de " + playerName + ": " + msg.get("value"));
-        server.verifyGuess((String) msg.get("value"), this);
-    }
-    default -> System.out.println("[Server] Mensaje desconocido: " + msg);
-}
-                
+
             }
         } catch (IOException e) {
             System.out.println("Cliente desconectado: " + playerName);
