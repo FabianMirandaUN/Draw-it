@@ -104,7 +104,7 @@ public class GameServer {
             return;
         }
 
-        // ✅ detener timer anterior si existe
+        // detener timer anterior si existe
         if (roundTimerThread != null && roundTimerThread.isAlive()) {
             roundTimerThread.interrupt();
         }
