@@ -392,7 +392,7 @@ public class ServidorGame extends javax.swing.JFrame {
             case "TIME" -> {
                 int remaining = ((Double) msg.get("remaining")).intValue();
                 status.setRemaining(remaining);
-                tools.setTime(remaining); // ✅ también actualiza ToolsPanel
+                tools.setTime(remaining); //  también actualiza ToolsPanel
             }
 
             case "WINNER" -> {

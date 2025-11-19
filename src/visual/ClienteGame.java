@@ -353,7 +353,7 @@ public class ClienteGame extends javax.swing.JFrame {
                 lienzo.revalidate();
                 lienzo.repaint();
 
-                tools.setArtist(iAmArtist); // ✅ aquí activas los componentes correctos
+                tools.setArtist(iAmArtist); //  aquí activas los componentes correctos
 
                 tools.setEnabled(iAmArtist);
                 drawing.setArtist(iAmArtist);
